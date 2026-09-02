@@ -1,0 +1,8 @@
+{
+  "name": "Nexovia Digital",
+  "description": "Digital Marketing Services, Web Development, SEO, Branding & Professional Online Courses by Nexovia Digital",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
