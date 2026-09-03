@@ -24,10 +24,12 @@ export interface Service {
 export interface Course {
   id: string;
   name: string;
+  subtitle?: string;
   category: string;
   duration: string;
   certificate: boolean;
   instructor: string;
+  instructorRole?: string;
   image: string;
   price: number;
   pricePKR?: string;
@@ -38,6 +40,7 @@ export interface Course {
   isPremium?: boolean;
   badge?: string;
   highlights?: string[];
+  targetStudents?: string[];
 }
 
 export interface PortfolioItem {

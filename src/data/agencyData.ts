@@ -252,6 +252,58 @@ export const SERVICES_DATA: Service[] = [
 
 export const COURSES_DATA: Course[] = [
   {
+    id: 'gohighlevel-crm-mastery',
+    name: 'GoHighLevel & CRM Mastery',
+    subtitle: 'Master CRM, Marketing Automation & Client Management with GoHighLevel.',
+    category: 'CRM & Automation',
+    duration: '1 Month',
+    certificate: true,
+    instructor: 'Benish',
+    instructorRole: 'GoHighLevel & CRM Trainer',
+    image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80',
+    price: 30,
+    pricePKR: 'PKR 7,000',
+    originalPricePKR: 'PKR 14,000',
+    level: 'Beginner to Advanced',
+    isPremium: false,
+    badge: 'Practical Online Training',
+    description: 'Learn how to use GoHighLevel and CRM systems to manage leads, customers, sales pipelines, appointments, marketing automation, and client communication. This practical course is suitable for beginners, freelancers, digital marketers, business owners, and agency professionals.',
+    highlights: [
+      'CRM Fundamentals',
+      'GoHighLevel Introduction',
+      'Lead Management',
+      'Sales Pipeline Management',
+      'Funnels, Forms & Surveys',
+      'Appointment Booking',
+      'Email & SMS Automation',
+      'Workflows & Automations',
+      'Client Management & Agency Setup',
+      'Practical Projects'
+    ],
+    syllabus: [
+      'CRM Fundamentals & GoHighLevel Introduction',
+      'Lead & Contact Management, Custom Fields & Smart Lists',
+      'Sales Pipeline Management & Deal Tracking Stages',
+      'High-Converting Funnels, Landing Pages & Website Builders',
+      'Custom Lead Forms, Surveys & Interactive Widgets',
+      'Automated Appointment Booking & Calendar Integrations',
+      'Email & SMS Marketing Automation Sequences',
+      'Advanced Workflows, Triggers & Multi-Branch Automations',
+      'Client Management, Sub-Accounts & Agency Setup',
+      'Practical Projects & Hands-On Portfolio Work',
+      'Professional Certificate & 1-on-1 Mentorship Included'
+    ],
+    targetStudents: [
+      'Beginners',
+      'Freelancers',
+      'Digital Marketers',
+      'Social Media Managers',
+      'Business Owners',
+      'Agency Owners',
+      'Students who want to learn CRM and marketing automation'
+    ]
+  },
+  {
     id: 'ebay-selling-ecommerce',
     name: 'eBay Selling & E-Commerce',
     category: 'E-Commerce',

@@ -106,6 +106,7 @@ export const CourseEnrollmentModal: React.FC<{
   const [studentName, setStudentName] = useState('');
   const [studentEmail, setStudentEmail] = useState('');
   const [studentPhone, setStudentPhone] = useState('');
+  const [studentMessage, setStudentMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -130,6 +131,7 @@ export const CourseEnrollmentModal: React.FC<{
           studentName: studentName.trim(),
           studentEmail: studentEmail.trim(),
           studentPhone: studentPhone.trim(),
+          message: studentMessage.trim(),
           courseName: course.name,
           courseDuration: course.duration,
           courseFee: course.pricePKR || `$${course.price}`,
@@ -151,6 +153,7 @@ export const CourseEnrollmentModal: React.FC<{
         studentName: studentName.trim(),
         studentEmail: studentEmail.trim(),
         studentPhone: studentPhone.trim(),
+        message: studentMessage.trim(),
         courseName: course.name,
         courseDuration: course.duration,
         courseFee: course.pricePKR || `$${course.price}`,
@@ -174,6 +177,7 @@ export const CourseEnrollmentModal: React.FC<{
     setStudentName('');
     setStudentEmail('');
     setStudentPhone('');
+    setStudentMessage('');
     onClose();
   };
 
@@ -189,23 +193,68 @@ export const CourseEnrollmentModal: React.FC<{
         </button>
 
         <div className="overflow-y-auto space-y-5 pr-2">
-          <div className="flex items-center gap-3">
+          <div className="flex items-start gap-3">
             <img
               src={course.image}
               alt={course.name}
-              className="w-16 h-16 rounded-2xl object-cover shrink-0"
+              className="w-16 h-16 rounded-2xl object-cover shrink-0 mt-1"
             />
-            <div>
-              <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-                Nexovia Academy — Course Registration
+            <div className="space-y-0.5">
+              <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider block">
+                Nexovia Academy — Course Registration & Details
               </span>
-              <h3 className="font-heading text-lg font-bold text-gray-900 dark:text-white">
+              <h3 className="font-heading text-lg font-bold text-gray-900 dark:text-white leading-tight">
                 {course.name}
               </h3>
-              <div className="text-xs text-gray-500 font-semibold mt-0.5">
-                Duration: {course.duration} | Fee: {course.pricePKR || `$${course.price}`}
+              {course.subtitle && (
+                <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+                  {course.subtitle}
+                </p>
+              )}
+              <div className="text-xs text-gray-500 font-semibold pt-0.5 flex flex-wrap items-center gap-2">
+                <span>Duration: {course.duration}</span>
+                <span>•</span>
+                <span>Fee: {course.pricePKR || `$${course.price}`}</span>
+                <span>•</span>
+                <span className="text-gray-700 dark:text-gray-300 font-bold">Trainer: {course.instructor}</span>
               </div>
             </div>
+          </div>
+
+          {/* COURSE SUMMARY & HIGHLIGHTS */}
+          <div className="p-3.5 bg-gray-50 dark:bg-gray-850/80 rounded-2xl border border-gray-200 dark:border-gray-800 text-xs space-y-2.5">
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed font-sans">
+              {course.description}
+            </p>
+            {course.highlights && (
+              <div className="pt-2 border-t border-gray-200 dark:border-gray-800">
+                <span className="text-[10px] font-extrabold uppercase text-gray-500 dark:text-gray-400 tracking-wider block mb-1.5">
+                  Key Highlights:
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[11px] text-gray-700 dark:text-gray-300">
+                  {course.highlights.slice(0, 6).map((h, i) => (
+                    <div key={i} className="flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-500 shrink-0" />
+                      <span className="truncate">{h}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {course.targetStudents && course.targetStudents.length > 0 && (
+              <div className="pt-2 border-t border-gray-200 dark:border-gray-800">
+                <span className="text-[10px] font-extrabold uppercase text-gray-500 dark:text-gray-400 tracking-wider block mb-1">
+                  Target Students:
+                </span>
+                <div className="flex flex-wrap gap-1">
+                  {course.targetStudents.map((st, i) => (
+                    <span key={i} className="text-[10px] bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-md font-semibold border border-blue-200/50 dark:border-blue-900/50">
+                      {st}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           <a
@@ -223,7 +272,7 @@ export const CourseEnrollmentModal: React.FC<{
           </a>
 
           {!submitted ? (
-            <form onSubmit={handleEnroll} className="space-y-4 pt-1">
+            <form onSubmit={handleEnroll} className="space-y-3.5 pt-1">
               {errorMessage && (
                 <div className="p-3 text-xs bg-rose-50 dark:bg-rose-950/80 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-300 rounded-xl">
                   {errorMessage}
@@ -232,7 +281,7 @@ export const CourseEnrollmentModal: React.FC<{
 
               <div className="space-y-1">
                 <label className="text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
-                  Full Student Name *
+                  Full Name *
                 </label>
                 <input
                   type="text"
@@ -244,31 +293,58 @@ export const CourseEnrollmentModal: React.FC<{
                 />
               </div>
 
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
+                    Email Address *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={studentEmail}
+                    onChange={(e) => setStudentEmail(e.target.value)}
+                    placeholder="Enter your email address"
+                    className="w-full px-4 py-2.5 text-xs bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:border-blue-500 text-gray-900 dark:text-white font-sans"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
+                    WhatsApp Number *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={studentPhone}
+                    onChange={(e) => setStudentPhone(e.target.value)}
+                    placeholder="e.g. +92 347 6811866"
+                    className="w-full px-4 py-2.5 text-xs bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:border-blue-500 text-gray-900 dark:text-white font-sans"
+                  />
+                </div>
+              </div>
+
               <div className="space-y-1">
                 <label className="text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
-                  Email Address *
+                  Course Name
                 </label>
                 <input
-                  type="email"
-                  required
-                  value={studentEmail}
-                  onChange={(e) => setStudentEmail(e.target.value)}
-                  placeholder="Enter your email address"
-                  className="w-full px-4 py-2.5 text-xs bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:border-blue-500 text-gray-900 dark:text-white font-sans"
+                  type="text"
+                  readOnly
+                  value={course.name}
+                  className="w-full px-4 py-2.5 text-xs bg-gray-100 dark:bg-gray-800/80 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-300 font-semibold cursor-not-allowed"
                 />
               </div>
 
               <div className="space-y-1">
                 <label className="text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
-                  WhatsApp Number *
+                  Message / Inquiries
                 </label>
-                <input
-                  type="tel"
-                  required
-                  value={studentPhone}
-                  onChange={(e) => setStudentPhone(e.target.value)}
-                  placeholder="e.g. +92 347 6811866"
-                  className="w-full px-4 py-2.5 text-xs bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:border-blue-500 text-gray-900 dark:text-white font-sans"
+                <textarea
+                  rows={2}
+                  value={studentMessage}
+                  onChange={(e) => setStudentMessage(e.target.value)}
+                  placeholder="Share any questions or your learning goals..."
+                  className="w-full px-4 py-2.5 text-xs bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:border-blue-500 text-gray-900 dark:text-white font-sans resize-none"
                 />
               </div>
 
@@ -285,7 +361,7 @@ export const CourseEnrollmentModal: React.FC<{
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3 px-4 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-3 px-4 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
               >
                 <span>{isSubmitting ? 'Submitting Registration...' : 'Complete Course Registration'}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -295,24 +371,24 @@ export const CourseEnrollmentModal: React.FC<{
             <div className="p-6 sm:p-8 rounded-2xl bg-emerald-950/90 border border-emerald-700 text-emerald-200 text-center space-y-4 shadow-xl">
               <Award className="w-12 h-12 text-emerald-400 mx-auto" />
               <h4 className="font-heading text-xl font-bold text-white">Registration Received!</h4>
-              <p className="text-xs sm:text-sm leading-relaxed text-emerald-100 font-sans">
-                Thank you for registering. Our academy admissions team will contact you shortly with payment and class details.
+              <p className="text-xs sm:text-sm leading-relaxed text-emerald-100 font-sans font-medium">
+                Thank you! Your enrollment request has been received. Our team will contact you shortly.
               </p>
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <a
                   href={`https://wa.me/923476811866?text=${encodeURIComponent(
-                    `Assalam o Alaikum! I want to enroll in the ${course.name}. Please share the payment details and enrollment procedure.`
+                    `Assalam o Alaikum! I want to enroll in ${course.name}. Please share the payment details and enrollment procedure.`
                   )}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-full sm:w-auto px-5 py-2.5 text-xs font-extrabold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl transition-all shadow-md flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-5 py-2.5 text-xs font-extrabold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <MessageSquare className="w-4 h-4 shrink-0" />
                   <span>Chat on WhatsApp Now</span>
                 </a>
                 <button
                   onClick={handleModalClose}
-                  className="w-full sm:w-auto px-5 py-2.5 text-xs font-bold text-gray-300 hover:text-white bg-gray-800 hover:bg-gray-700 rounded-xl transition-all"
+                  className="w-full sm:w-auto px-5 py-2.5 text-xs font-bold text-gray-300 hover:text-white bg-gray-800 hover:bg-gray-700 rounded-xl transition-all cursor-pointer"
                 >
                   Close Window
                 </button>

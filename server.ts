@@ -46,7 +46,7 @@ function saveEnrollments(enrollments: any[]) {
 // 1. POST /api/enrollments - Submit Course Registration
 app.post('/api/enrollments', async (req, res) => {
   try {
-    const { studentName, studentEmail, studentPhone, courseName, courseDuration, courseFee } = req.body;
+    const { studentName, studentEmail, studentPhone, courseName, courseDuration, courseFee, message } = req.body;
 
     if (!studentName || !studentEmail || !studentPhone || !courseName) {
       return res.status(400).json({
@@ -61,6 +61,7 @@ app.post('/api/enrollments', async (req, res) => {
       studentName: String(studentName).trim(),
       studentEmail: String(studentEmail).trim(),
       studentPhone: String(studentPhone).trim(),
+      message: message ? String(message).trim() : '',
       courseName: String(courseName).trim(),
       courseDuration: courseDuration ? String(courseDuration).trim() : '1 Month',
       courseFee: courseFee ? String(courseFee).trim() : 'Paid Course',
@@ -116,7 +117,7 @@ app.post('/api/enrollments', async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: 'Registration Received!\nThank you for registering. Our academy admissions team will contact you shortly with payment and class details.',
+      message: 'Thank you! Your enrollment request has been received. Our team will contact you shortly.',
       enrollment: newEnrollment,
     });
   } catch (err: any) {
