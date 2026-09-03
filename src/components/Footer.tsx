@@ -147,7 +147,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab, openLegalModal, op
                     }}
                     className="hover:text-blue-400 transition-colors text-left truncate max-w-full block"
                   >
-                    • {c.name} {c.isPremium ? '(PKR 15,000)' : '(PKR 6,000)'}
+                    • {c.name} {c.pricePKR ? `(${c.pricePKR})` : ''}
                   </button>
                 </li>
               ))}
